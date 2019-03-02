@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>渗透测试入门 | MARK49</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="外网渗透,基础,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="Hulkbuster">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">glodtime.com</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a href="/" target="_self">
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a href="/archives/" target="_self">
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a href="/categories/" target="_self">
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a href="/tags/" target="_self">
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a href="/friends/" target="_self">
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a href="/about/" target="_self">
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path>
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a href="https://github.com/Y666999" target="_blank">
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://weibo.com/5234736247" target="_blank">
+                    微博
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>渗透测试入门</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2019-03-02
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/外网渗透/">
+            外网渗透
+          </a>
+      </span>
+    
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="1-基本的漏洞原理-笔记链接"><a href="#1-基本的漏洞原理-笔记链接" class="headerlink" title="1. 基本的漏洞原理(笔记链接)"></a>1. 基本的漏洞原理(笔记链接)</h2><p>###1.1 sql注入</p>
+<blockquote>
+<p>sql注入是危害比较大的攻击手段，网站存在sql注入漏洞，那攻击者很容易去获取你的服务器数据库信息，登录后台，上传木马、病毒等，甚至可以直接在服务器后台上进行写入脚本等危害操作。</p>
+</blockquote>
+<p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs1pu2up0-54av2QGQfN28DaKY" target="_blank" rel="noopener">SQL注入</a></p>
+<p>###1.2 CSRF，SSRF</p>
+<blockquote>
+<p>客户端请求伪造和服务器请求伪造。利用CSRF的很多，因为存在这种漏洞的网站比较多，虽然可能对服务器本身存在不了很大威胁，但是会给用户带来可大可小的危害。服务器请求伪造本身就是针对服务器，利用服务器去进行一些权限访问，或者去执行其他服务器上的脚本等（目前只在CTF中遇到过，可能站日的比较少吧）</p>
+</blockquote>
+<p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs0qPksN0ifkXf2aUa9O2LK8fG" target="_blank" rel="noopener">CSRF,SSRF</a></p>
+<p>###1.3 XSS</p>
+<blockquote>
+<p>第一次接触XSS时是在DVWA上，当时老师是搭了一个蓝莲花战队的xss平台，利用此平台去接收访问注入xss代码网站用户COOKIE、ip和客户端等信息。目前见较多的就是xss蠕虫攻击等类似的像打小广告的手段，然而瓜佬说不要让我去把很多时间耗在xss上…</p>
+</blockquote>
+<p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs39MBpZ363AgW2yx7ps1qQrLR" target="_blank" rel="noopener">XSS</a></p>
+<p>###1.4 命令执行</p>
+<blockquote>
+<p>在CTF中经常看到命令执行，代码执行的，一般配合代码审计来攻击（我见到的），然而我的php等其他的前端语言掌握的并不是很好，遇到的只是去查一查然后去看代码。</p>
+</blockquote>
+<p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs2pvaFi1Ji4Uc2X0hzl28v8kY" target="_blank" rel="noopener">命令执行</a></p>
+<p>###1.5 文件包含</p>
+<blockquote>
+<p>文件包含经常会和文件上传去结合使用，比较经典了，可能我接触的知识点比较“经典”吧，正常是去执行已经在后台服务器上的脚本来获取服务器上的一些敏感信息或者直接执行上传上去的木马等</p>
+</blockquote>
+<p><strong>笔记链接</strong>： <a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs18JV4v0MiQDe2_dq3g2hEXV8" target="_blank" rel="noopener">文件包含</a></p>
+<p>###1.6 文件上传</p>
+<blockquote>
+<p>文件上传对我来说理解起来是比较简单的，因为开发者对于文件上传验证几种方式都好理解，前端的脚本验证、对于文件后缀的验证、对于文件文件格式的验证，配合白名单黑名单等。文件上传配合服务器web容器的解析漏洞。</p>
+</blockquote>
+<p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs2vFdE8212kPQ2A7Rs21bgezm" target="_blank" rel="noopener">文件上传</a></p>
+<p>###1.7 XXE</p>
+<blockquote>
+<p>XXE是我后来用pikachu渗透练习平台遇到的，平时遇到的也不多。</p>
+</blockquote>
+<p><strong>笔记链接</strong>： <a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs16tBmA0uHksD2vByv-2yjIva" target="_blank" rel="noopener">XXE</a></p>
+<blockquote>
+<p>这里只是一部分，关于外网的漏洞攻击还有很多，例如字典爆破，反序列化等漏洞，很多东西后面再写吧。</p>
+</blockquote>
+<h2 id="2-絮叨"><a href="#2-絮叨" class="headerlink" title="2. 絮叨"></a>2. 絮叨</h2><p>渗透测试需要更多的实践来获得经验，不光学习<strong>原理</strong>、<strong>攻击手段</strong>和<strong>防御手段</strong>，还需要掌握各种<strong>工具使用</strong>，掌握完工具使用后应该去尝试使用代码<strong>编写渗透脚本</strong>等，而不是做一个<a href="https://baike.baidu.com/item/%E8%84%9A%E6%9C%AC%E5%B0%8F%E5%AD%90/445374?fr=aladdin" target="_blank" rel="noopener">脚本小子</a>。</p>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : MARK49 <br>
+        
+        原文链接 : <a href>http://blog.glodtime.com/2019/03/02/blog_1/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share" style="margin-top: -2rem" data-wechat-qrcode-title="<p>微信扫一扫</p>" data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>" data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter">
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async></script>
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/基础/">
+              #基础
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2019/03/02/top/" target="_self">置顶</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+   
+
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2019, 2, 2).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
