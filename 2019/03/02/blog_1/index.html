@@ -219,38 +219,31 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="1-基本的漏洞原理-笔记链接"><a href="#1-基本的漏洞原理-笔记链接" class="headerlink" title="1. 基本的漏洞原理(笔记链接)"></a>1. 基本的漏洞原理(笔记链接)</h2><p>###1.1 sql注入</p>
-<blockquote>
+      <h2 id="1-基本的漏洞原理-笔记链接"><a href="#1-基本的漏洞原理-笔记链接" class="headerlink" title="1. 基本的漏洞原理(笔记链接)"></a>1. 基本的漏洞原理(笔记链接)</h2><h3 id="1-1-sql注入"><a href="#1-1-sql注入" class="headerlink" title="1.1 sql注入"></a>1.1 sql注入</h3><blockquote>
 <p>sql注入是危害比较大的攻击手段，网站存在sql注入漏洞，那攻击者很容易去获取你的服务器数据库信息，登录后台，上传木马、病毒等，甚至可以直接在服务器后台上进行写入脚本等危害操作。</p>
 </blockquote>
 <p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs1pu2up0-54av2QGQfN28DaKY" target="_blank" rel="noopener">SQL注入</a></p>
-<p>###1.2 CSRF，SSRF</p>
-<blockquote>
+<h3 id="1-2-CSRF，SSRF"><a href="#1-2-CSRF，SSRF" class="headerlink" title="1.2 CSRF，SSRF"></a>1.2 CSRF，SSRF</h3><blockquote>
 <p>客户端请求伪造和服务器请求伪造。利用CSRF的很多，因为存在这种漏洞的网站比较多，虽然可能对服务器本身存在不了很大威胁，但是会给用户带来可大可小的危害。服务器请求伪造本身就是针对服务器，利用服务器去进行一些权限访问，或者去执行其他服务器上的脚本等（目前只在CTF中遇到过，可能站日的比较少吧）</p>
 </blockquote>
 <p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs0qPksN0ifkXf2aUa9O2LK8fG" target="_blank" rel="noopener">CSRF,SSRF</a></p>
-<p>###1.3 XSS</p>
-<blockquote>
+<h3 id="1-3-XSS"><a href="#1-3-XSS" class="headerlink" title="1.3 XSS"></a>1.3 XSS</h3><blockquote>
 <p>第一次接触XSS时是在DVWA上，当时老师是搭了一个蓝莲花战队的xss平台，利用此平台去接收访问注入xss代码网站用户COOKIE、ip和客户端等信息。目前见较多的就是xss蠕虫攻击等类似的像打小广告的手段，然而瓜佬说不要让我去把很多时间耗在xss上…</p>
 </blockquote>
 <p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs39MBpZ363AgW2yx7ps1qQrLR" target="_blank" rel="noopener">XSS</a></p>
-<p>###1.4 命令执行</p>
-<blockquote>
+<h3 id="1-4-命令执行"><a href="#1-4-命令执行" class="headerlink" title="1.4 命令执行"></a>1.4 命令执行</h3><blockquote>
 <p>在CTF中经常看到命令执行，代码执行的，一般配合代码审计来攻击（我见到的），然而我的php等其他的前端语言掌握的并不是很好，遇到的只是去查一查然后去看代码。</p>
 </blockquote>
 <p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs2pvaFi1Ji4Uc2X0hzl28v8kY" target="_blank" rel="noopener">命令执行</a></p>
-<p>###1.5 文件包含</p>
-<blockquote>
+<h3 id="1-5-文件包含"><a href="#1-5-文件包含" class="headerlink" title="1.5 文件包含"></a>1.5 文件包含</h3><blockquote>
 <p>文件包含经常会和文件上传去结合使用，比较经典了，可能我接触的知识点比较“经典”吧，正常是去执行已经在后台服务器上的脚本来获取服务器上的一些敏感信息或者直接执行上传上去的木马等</p>
 </blockquote>
 <p><strong>笔记链接</strong>： <a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs18JV4v0MiQDe2_dq3g2hEXV8" target="_blank" rel="noopener">文件包含</a></p>
-<p>###1.6 文件上传</p>
-<blockquote>
+<h3 id="1-6-文件上传"><a href="#1-6-文件上传" class="headerlink" title="1.6 文件上传"></a>1.6 文件上传</h3><blockquote>
 <p>文件上传对我来说理解起来是比较简单的，因为开发者对于文件上传验证几种方式都好理解，前端的脚本验证、对于文件后缀的验证、对于文件文件格式的验证，配合白名单黑名单等。文件上传配合服务器web容器的解析漏洞。</p>
 </blockquote>
 <p><strong>笔记链接</strong>：<a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs2vFdE8212kPQ2A7Rs21bgezm" target="_blank" rel="noopener">文件上传</a></p>
-<p>###1.7 XXE</p>
-<blockquote>
+<h3 id="1-7-XXE"><a href="#1-7-XXE" class="headerlink" title="1.7 XXE"></a>1.7 XXE</h3><blockquote>
 <p>XXE是我后来用pikachu渗透练习平台遇到的，平时遇到的也不多。</p>
 </blockquote>
 <p><strong>笔记链接</strong>： <a href="http://88850530.wiz03.com/share/s/28xgkM3Jr17E2h3KTH3ZarGs16tBmA0uHksD2vByv-2yjIva" target="_blank" rel="noopener">XXE</a></p>
